@@ -10,7 +10,6 @@ func main() {
 
 	brewChan := make(chan string, 1)
 	distributeChan := make(chan string, 2)
-	doneChan := make(chan bool)
 
 	go func(orders []string) {
 		for _, order := range orders {
@@ -35,13 +34,7 @@ func main() {
 		close(distributeChan)
 	}()
 
-	go func() {
-		for coffee := range distributeChan {
-			fmt.Println("Happy customer with a ", coffee)
-		}
-
-		close(doneChan)
-	}()
-
-	<- doneChan
+	for coffee := range distributeChan {
+		fmt.Println("Happy customer with a ", coffee)
+	}
 }
